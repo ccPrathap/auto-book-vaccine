@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { OrgContext } from './GlobalContext';
 
 const MyBaseComp = () => {
-  const [subOrg, setSubOrg] = useState("Tech support");
+  const [subOrg, setSubOrg] = useState("Tech support US/India");
 
   return <OrgContext.Provider
     value={{ org: "MyOrgFromContext", subOrg, setSubOrg }}
