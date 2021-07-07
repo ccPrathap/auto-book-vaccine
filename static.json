@@ -2,7 +2,7 @@
   "root": "build/",
   "proxies": {
     "/api/": {
-      "origin": "https://cdn-api.co-vin.in/api/"
+      "origin": "https://cdn-api.co-vin.in/api"
     }
   },
   "headers": {
