@@ -4,9 +4,9 @@ import { OrgContext } from './GlobalContext';
 
 const CustomForm = (props) => {
   const history = useHistory();
-  // const context = useContext(OrgContext);
-  const [empId, setEmpId] = useState(props.empId);
-  const [empName, setEmpName] = useState(props.empName);
+  const context = useContext(OrgContext);
+  const [empId] = useState(props.empId);
+  const [empName] = useState(props.empName);
 
   // const handleClick = () => history.push("/");
 
@@ -36,10 +36,7 @@ const CustomForm = (props) => {
       <div />
       EMP Details:{empName && <p>{empId}. {empName}</p>}
       {/* {window.sessionStorage.getItem("formData")} */}
-      <OrgContext.Consumer>
-        {value => value.subOrg}
-      </OrgContext.Consumer>
-      {/* {context.subOrg} */}
+      {context.subOrg}
     </div>
   ) : <div>Loading...</div>;
 }
