@@ -27,7 +27,13 @@ export default class VaccineForm extends React.Component {
     const { date, pincode } = this.state;
     this.setState({ submitting: true });
     // window.sessionStorage.setItem("formData", JSON.stringify(this.state));
-    const data = await fetch(`/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${DateTime.fromSQL(date).toFormat("dd-MM-yyyy")}`);
+    const data = await fetch(`/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${DateTime.fromSQL(date).toFormat("dd-MM-yyyy")}`, {
+      'headers': {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.62',
+        'accept': 'application/json, text/plain, */*',
+        'content-type': 'application/json',
+      },
+    });
     const res = await data.json();
     const slots = [];
     const { sessions = [] } = res;
