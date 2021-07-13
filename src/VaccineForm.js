@@ -1,10 +1,7 @@
 import React from 'react';
 import { DateTime } from "luxon";
-import { OrgContext } from './GlobalContext';
 
-export default class VaccineForm extends React.Component {
-  static contextType = OrgContext;
-
+class VaccineForm extends React.Component {
   state = {
     pincode: "",
     date: "",
@@ -51,7 +48,7 @@ export default class VaccineForm extends React.Component {
         });
       }
     });
-    // this.context.setSubOrg(this.state.pincode);
+    this.props.updateSubOrg(pincode);
     this.setState({
       slots,
       submitting: false,
@@ -69,10 +66,10 @@ export default class VaccineForm extends React.Component {
       date,
       pincode
     } = this.state;
-
+    const { org, subOrg } = this.props;
     return (
       <>
-        <h1>Search vaccine availablity for 18+</h1>
+        <h1>Search vaccine availablity for 18+ ({org}-{subOrg})</h1>
         <input
           placeholder="Enter pincode"
           type="number"
@@ -108,3 +105,5 @@ export default class VaccineForm extends React.Component {
     );
   }
 }
+
+export default VaccineForm;

@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
+import { store } from './Store';
 import reportWebVitals from './reportWebVitals';
-import { OrgContext } from './GlobalContext';
 
 const MyBaseComp = () => {
-  const [subOrg, setSubOrg] = useState("Tech support US/India");
-
-  return <OrgContext.Provider
-    value={{ org: "MyOrgFromContext", subOrg, setSubOrg }}
-  >
-    <App empId={Math.floor(Math.random() * 10e6)} empName={"Employee Name"} />
-  </OrgContext.Provider>;
+  return <React.StrictMode>
+    <Provider store={store}>
+      <App empId={Math.floor(Math.random() * 10e6)} empName={"Employee Name"} />
+    </Provider>
+  </React.StrictMode>;
 };
 
 ReactDOM.render(

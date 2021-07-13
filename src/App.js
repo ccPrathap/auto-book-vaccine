@@ -6,15 +6,15 @@ import React from 'react';
 //   Link
 // } from "react-router-dom";
 // import CustomForm from './CustomForm';
-import VaccineForm from './VaccineForm';
+import VaccineForm from './VaccineForm.Container';
 // import CustomFormHook from './CustomFormHook';
 // import logo from './logo.svg';
 import './App.css';
 
-function App(props) {
+function App() {
   return (
     <div className="App App-header">
-      <VaccineForm org={props.org} empId={123456} empName={"Test"} />
+      <VaccineForm empId={123456} empName={"Test"} />
       {/* <Router>
         <ul>
           <li>
