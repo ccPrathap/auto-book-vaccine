@@ -1,6 +1,5 @@
-import { combineReducers, createStore } from 'redux';
-import subOrgReducer from './subOrgReducer';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers';
 
-export const store = createStore(combineReducers({
-  subOrgReducer,
-}));
+export const store = createStore(rootReducer, {}, applyMiddleware(thunk));

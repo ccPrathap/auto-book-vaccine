@@ -11,6 +11,40 @@ class VaccineForm extends React.Component {
     bookInput: {}
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      const slots = [];
+      const { sessions = [] } = this.props.data;
+      sessions.forEach(item => {
+        const {
+          available_capacity_dose1,
+          available_capacity_dose2,
+          center_id,
+          min_age_limit,
+          name,
+          vaccine
+        } = item;
+        if (available_capacity_dose1 && min_age_limit === 18) {
+          slots.push({
+            name,
+            vaccine,
+            center_id,
+            available_capacity_dose1,
+            available_capacity_dose2,
+            min_age_limit
+          });
+        }
+      });
+
+      this.setState({
+        slots,
+        submitting: false,
+        submittedOnce: true,
+        slotAvailability: slots.length > 0
+      });
+    }
+  }
+
   handleChange = e => {
     const { name, value } = e.target;
     if (name === "pincode") {
@@ -22,39 +56,9 @@ class VaccineForm extends React.Component {
 
   handleSubmit = async () => {
     const { date, pincode } = this.state;
-    this.setState({ submitting: true });
-    // window.sessionStorage.setItem("formData", JSON.stringify(this.state));
-    const data = await fetch(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${DateTime.fromSQL(date).toFormat("dd-MM-yyyy")}`);
-    const res = await data.json();
-    const slots = [];
-    const { sessions = [] } = res;
-    sessions.forEach(item => {
-      const {
-        available_capacity_dose1,
-        available_capacity_dose2,
-        center_id,
-        min_age_limit,
-        name,
-        vaccine
-      } = item;
-      if (available_capacity_dose1 && min_age_limit === 18) {
-        slots.push({
-          name,
-          vaccine,
-          center_id,
-          available_capacity_dose1,
-          available_capacity_dose2,
-          min_age_limit
-        });
-      }
-    });
     this.props.updateSubOrg(pincode);
-    this.setState({
-      slots,
-      submitting: false,
-      submittedOnce: true,
-      slotAvailability: slots.length > 0
-    });
+    this.setState({ submitting: true });
+    this.props.fetchSlots({ date, pincode });
   }
 
   render() {
@@ -66,7 +70,8 @@ class VaccineForm extends React.Component {
       date,
       pincode
     } = this.state;
-    const { org, subOrg } = this.props;
+    const { errorMsg, isLoading, org, subOrg } = this.props;
+  
     return (
       <>
         <h1>Search vaccine availablity for 18+ ({org}-{subOrg})</h1>
@@ -92,15 +97,17 @@ class VaccineForm extends React.Component {
           onClick={this.handleSubmit}>{submitting ? "Submitting..." : "Submit"}
         </button>
         <div style={{ margin: "10px" }} />
-        {slotAvailability && <>
+        {!isLoading && slotAvailability && <>
           <h2>Hey! I found the available slot(s)...!</h2>
           <ol style={{ textAlign: "left" }}>
-            {slots.map(slot => <li key={slot.center_id}>
+            {slots.map(slot => <li key={`${slot.center_id}_${slot.vaccine}`}>
               {slot.vaccine} - Available slots at <b>{slot.name}</b> for <b>dose 1</b> are <b>{slot.available_capacity_dose1}</b>
             </li>)}
           </ol>
         </>}
-        {submittedOnce && !slotAvailability && <h2>No available slots found...! :(</h2>}
+        {!isLoading && submittedOnce && !slotAvailability && <h2>No available slots found...! :(</h2>}
+        {isLoading && <h2>Loading...</h2>}
+        {errorMsg && <h2 style={{ color: "red" }}>{errorMsg}</h2>}
       </>
     );
   }
