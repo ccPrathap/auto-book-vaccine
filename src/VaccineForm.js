@@ -84,7 +84,7 @@ class VaccineForm extends React.Component {
         />
         <div style={{ margin: "10px" }} />
         <input
-          placeholder="Enter pincode"
+          placeholder="dd-mm-yyyy"
           type="date"
           name="date"
           value={date}

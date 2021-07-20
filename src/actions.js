@@ -1,7 +1,8 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
+import { UPDATE_SUB_ORG } from './constants';
 
 export const updateSubOrg = payload => ({
-  type: "UPDATE_SUB_ORG",
+  type: UPDATE_SUB_ORG,
   payload,
 });
 

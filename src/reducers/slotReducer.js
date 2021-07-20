@@ -2,9 +2,9 @@ const initialState = {
   isLoading: false,
   errorMsg: "",
   data: []
-}
+};
 
-const myReducer = (state = initialState, action) => {
+const myReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case "FETCH_SLOTS_REQUEST":
       return { ...state, isLoading: true, errorMsg: "" };
